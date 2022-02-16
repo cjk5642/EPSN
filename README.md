@@ -1,5 +1,7 @@
 # ESPN
-Extraction of Sports Particulars as Networks (ESPN) API/CLI is the first every transformation tool to convert sports data in tabular or unstrucuted format into a network style format like .gml. As well as collecting sports data as networks, you only need to provide what you want and ESPN will do the rest.
+*Extraction of Sports Particulars as Networks (ESPN) API/CLI* is the first every transformation tool to convert sports data in tabular or unstrucuted format into a network style format like .gml. As well as collecting sports data as networks, you only need to provide what you want and ESPN will do the rest.
+
+---
 
 ### Problem
 When using network data formats like .gml or a .csv that explicitly states what the source and target nodes are, there is no room for customization and variability. Often times, finding the right network data is hard, time consuming, and sometimes impossible. This is where ESPN comes into play.
