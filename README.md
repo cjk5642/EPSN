@@ -1,2 +1,2 @@
 # ESPN
-Extraction of Sports Particulars\\as Networks (ESPN) API/CLI
+Extraction of Sports Particulars as Networks (ESPN) API/CLI
