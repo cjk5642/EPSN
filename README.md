@@ -12,7 +12,7 @@ ESPN allows for users to completely customize their querying experience for extr
 ---
 
 ### Sample Response
-Say you would like to query the 1980 NFL season for Week 1 games at the team level. The search query url will be `https://extractsportsparts.network/?sport=nfl&year=1980&week1&team=all&player=all&level=team`. The response would be as follows:
+Say you would like to query the 1980 NFL season for Week 1 games at the team level. The search query url will be `https://extractsportsparts.network/?sport=nfl&year=1980&week1&team=all&player=all&level=team&postseason=false`. The response would be as follows:
 ```gml
 graph[
 	multigraph 1
