@@ -1,4 +1,4 @@
-# ESPN (Extraction of Sports Particulars as Networks) API/CLI
+# ESPN (Extraction of Sports Particulars as Networks)
 **ESPN** is the first every transformation tool to convert sports data in tabular or unstrucuted format into a network style format like `.gml`. As well as collecting sports data as networks, you only need to provide what you want and **ESPN** will do the rest.
 
 ---
