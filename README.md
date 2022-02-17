@@ -38,6 +38,7 @@ graph[
 	 source_score 7
 	 target_score 17
 	 week 1
+	 year 1980
 	 is_postseason "False"
 	]
 	edge[
@@ -46,6 +47,7 @@ graph[
 	 source_score 17
 	 target_score 12
 	 week 1
+	 year 1980
 	 is_postseason "False"
 	]
     ...
