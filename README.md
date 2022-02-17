@@ -1,4 +1,4 @@
-# ESPN (Extraction of Sports Particulars as Networks) 
+# Extraction of Sports Particulars as Networks (ESPN)
 <p align="center">
 	<img src="images/logo.png" alt="logo" width="600"/>
 </p>
