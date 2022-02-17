@@ -15,15 +15,8 @@ When using network data formats like `.gml` or a `.csv` that explicitly states w
 **ESPN** allows for users to completely customize their querying experience for extracting any sports information at the player or team level. Want to establish a network of MLB players from the 1971 season to see how players interactions led the Pirates to a World Series? You can! Want to analyze all NFL team games in the 21st century for studying effects of losses or wins? Great! You can do that to. The possibilities are endless!
 
 ### Currently Supports
-:white_check_mark: NFL
-
-:x: MLB
-
-:x: NHL
-
-:x: NCAAF
-
-:x: NCAAB
+| :white_check_mark: NFL <img width=200/> | :x: MLB <img width=200/> | :x: NHL <img width=200/> | :x: NCAAF <img width=200/> | :x: NCAAB <img width=200/> |
+| --- | --- | --- | --- | --- |
 
 ---
 
@@ -71,7 +64,8 @@ and the network will look as follows
 
 ### Time for response
 The following displays the estimated times of how fast the data is queried and responded
-|        | NFL | MLB | NHL | NCAAF | NCAAB |
-|--------|-----|-----|-----|-------|-------|
-| Team   |     |     |     |       |       |
-| Player |     |     |     |       |       |
+
+| (/week/year) 	| NFL   	| MLB 	| NHL 	| NCAAF 	| NCAAB 	|
+|--------------	|-------	|-----	|-----	|-------	|-------	|
+| Team         	| 5.83s 	|     	|     	|       	|       	|
+| Player       	| 5.89s 	|     	|     	|       	|       	|
