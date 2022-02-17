@@ -1,5 +1,6 @@
 # ESPN (Extraction of Sports Particulars as Networks)
-**ESPN** is the first every transformation tool to convert sports data in tabular or unstrucuted format into a network style format like `.gml`. As well as collecting sports data as networks, you only need to provide what you want and **ESPN** will do the rest.
+![ESPN](images/logo.png)
+**ESPN** is the first ever transformation tool to convert sports data in tabular or unstrucuted format into a network style format like `.gml`. As well as collecting sports data as networks, you only need to provide what you want and **ESPN** will do the rest.
 
 ---
 
@@ -12,7 +13,7 @@ When using network data formats like `.gml` or a `.csv` that explicitly states w
 ---
 
 ### Sample Response
-Say you would like to query the 1980 NFL season for Week 1 games at the team level. The search query url will be `https://extractsportsparts.network/?sport=nfl&year=1980&week=1&team=all&player=all&level=team&postseason=false`. The response would be as follows:
+Say you would like to query the 1980 NFL season for all games at the team level. The search query url will be `https://extractsportsparts.network/?sport=nfl&year=1980&week=1&team=all&player=all&level=team&postseason=false`. The response would be as follows:
 ```gml
 graph[
 	multigraph 1
@@ -33,7 +34,7 @@ graph[
 	 source_score 7
 	 target_score 17
 	 week 1
-	 is_postseason False
+	 is_postseason "False"
 	]
 	edge[
 	 source "Tampa Bay Buccaneers"
@@ -41,8 +42,11 @@ graph[
 	 source_score 17
 	 target_score 12
 	 week 1
-	 is_postseason False
+	 is_postseason "False"
 	]
     ...
 ]
 ```
+and the network will look as follows
+
+![example](images/example.png?style=centerme)
