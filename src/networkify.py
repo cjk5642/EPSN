@@ -17,19 +17,17 @@ from utils import _convert_data_to_gml, _return_graph
 # load the lookups
 from schedules import *
 
-nflschedules = NFLSchedules()
-
 class NFLtoNetwork:
-  def __init__(self, year: int or str = 2021, week: int = None, level: str = 'Team', regular_season_only: bool = True):
+  def __init__(self, year: int or str = 2021, week: int = None, level: str = 'Team', season_type: str = 'regular'):
     self.year = year
     self.nflschedules = NFLSchedules()
-    self.__week = week
-    self.__level = level
-    self.__regular_season_only = regular_season_only
+    self.week = week
+    self.level = level
+    self.season_type = season_type
     
     # create data
     if isinstance(self.year, int):
-      self.__schedule = nflschedules.parse_schedules(self.year)
+      self.schedule = self.nflschedules.parse_schedules(self.year)
       self.nodes, self.edges = self._establish_data()
     # multiple years
     else:
@@ -43,14 +41,14 @@ class NFLtoNetwork:
       self.edges = []
       for year in year_range:
         self.year = year
-        self.__schedule = nflschedules.parse_schedules(self.year)
+        self.schedule = self.nflschedules.parse_schedules(self.year)
         node, edge = self._establish_data()
         self.nodes.append(node)
         self.edges.append(edge)
       self.year = list(year_range)
 
   def _establish_data(self):
-    if self.__level == 'Team' or self.__level == 'team':
+    if self.level == 'Team' or self.level == 'team':
       nodes, edges = self._prepare_game_data()
     else:
       nodes, edges = self._prepare_player_data()
@@ -58,23 +56,27 @@ class NFLtoNetwork:
 
   def _prepare_game_data(self):
     # find the data specified
-    if self.__week is None:
-      if self.__regular_season_only:
-        data = nfl_boxscores(self.__schedule['regular'][0], self.year, self.__schedule['regular'][-1])
+    if self.week is None:
+      if self.season_type == 'regular':
+        start, end = self.schedule['regular']
+      elif self.season_type == 'post':
+        start, end = self.schedule['post']
       else:
-        data = nfl_boxscores(self.__schedule['regular'][0], self.year, self.__schedule['post'][-1])
+        start , _   = self.schedule['regular']
+        _     , end = self.schedule['post']
+      data = nfl_boxscores(start, self.year, end)
     else:
-      data = nfl_boxscores(self.__week, self.year)
+      data = nfl_boxscores(self.week, self.year)
 
     games = data.games
     weeks = games.keys()
+    
     nodes = []
     edges = []
     i = 0
     for w in tqdm(weeks):
       week = games[w]
       num_week = int(w.split('-')[0])
-      week_name = self.__schedule['name'][num_week]
       for g in week:
         boxscore = g['boxscore']
         away_team = g['away_name']
@@ -84,12 +86,12 @@ class NFLtoNetwork:
 
         edge = {'source': away_team, 'target': home_team, 
                 'source_score': away_score, 'target_score': home_score, 
-                'week_name': week_name, 'week_num': num_week, 'year': self.year,
-                'is_postseason': not self.__regular_season_only}
+                'week_num': num_week, 'year': self.year,
+                'season_type': self.season_type}
         edges.append(edge)
 
         # extract game stats
-        game_data = nfl_boxscore(boxscore)
+        #game_data = nfl_boxscore(boxscore)
 
         # extract the location
         home_splits, away_splits = home_team.split(' '), away_team.split(' ')
@@ -109,13 +111,13 @@ class NFLtoNetwork:
 
   def _prepare_player_data(self):
     # find the data specified
-    if self.__week is None:
+    if self.week is None:
       if self.__regular_season_only:
-        data = nfl_boxscores(self.__schedule['regular'][0], self.year, self.__schedule['regular'][-1])
+        data = nfl_boxscores(self.schedule['regular'][0], self.year, self.schedule['regular'][-1])
       else:
-        data = nfl_boxscores(self.__schedule['regular'][0], self.year, self.__schedule['post'][-1])
+        data = nfl_boxscores(self.schedule['regular'][0], self.year, self.schedule['post'][-1])
     else:
-      data = nfl_boxscores(self.__week, self.year)
+      data = nfl_boxscores(self.week, self.year)
     
     # collect the games and weeks for the given year and week specification
     games = data.games
@@ -127,7 +129,7 @@ class NFLtoNetwork:
       week = games[w]
       # extract week number
       num_week = int(w.split('-')[0])
-      week_name = self.__schedule['name'][num_week]
+      week_name = self.schedule['name'][num_week]
       for g in week:
         # collect the team's names
         home_team = g['home_name']
@@ -165,7 +167,7 @@ class NFLtoNetwork:
             edge = {'source': ap_id, 'target': hp_id, 'source_name': ap_player['name'], 
                     'target_name': hp_player['name'], 'week_name': week_name, 
                     'week_num': num_week, 'year': self.year, 
-                    'is_postseason': not self.__regular_season_only}
+                    'season_type': self.season_type}
             edges.append(edge)
 
     return list(players.values()), edges

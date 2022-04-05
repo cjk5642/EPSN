@@ -1,13 +1,8 @@
+from gc import collect
 import pandas as pd
-import datetime
 import os
-import numpy as np
-from collections import defaultdict
-import sys
-import itertools
 import json
 import requests
-import re
 from bs4 import BeautifulSoup
 from tqdm import tqdm
 from error import SportNotAllowedError
@@ -20,8 +15,9 @@ class SportSchedules:
     def __init__(self):
         self.schedule_path = self._establish_schedules_dir()
         self.collectseasons = CollectSeasons()
-        self.sports = { "NFL": NFLSchedules(self.collectseasons, self.schedule_path), 
-                        "MLB": MLBSchedules(self.collectseasons, self.schedule_path)}
+        self.sports = { "nfl": NFLSchedules(self.collectseasons, self.schedule_path), 
+                        "mlb": MLBSchedules(self.collectseasons, self.schedule_path),
+                        "nba": NBASchedules(self.collectseasons, self.schedule_path)}
 
     def _establish_schedules_dir(self) -> None:
         schedule_path = os.path.join(os.getcwd(), "data", "schedules")
@@ -69,7 +65,6 @@ class NFLSchedules:
             temp = schedule[schedule['year'] == year]
             data['regular'] = list(map(str, temp.loc[temp['type_week'] == 'regular', 'week_num'].values))
             data['post'] = list(map(str, temp.loc[temp['type_week'] == 'post', 'week_num'].values))
-            data['name'] = list(map(str, temp['Week'].values))
             schedule_json[year] = data
         
         # save the file
@@ -108,7 +103,7 @@ class MLBSchedules:
                     all_h3 = split_data[ds].find_all('h3')
                     all_h3 = list(map(lambda x: x.text, all_h3))
                     if 'Today' not in all_h3[0] or 'Today' not in all_h3[-1]:
-                        split_range = [pd.to_datetime(all_h3[0]), pd.to_datetime(all_h3[-1])]
+                        split_range = [pd.to_datetime(all_h3[0]).date(), pd.to_datetime(all_h3[-1]).date()]
                     else:
                         split_range = []
                     split_data[ds] = list(map(str, split_range))
@@ -116,7 +111,7 @@ class MLBSchedules:
                 split_data = {'regular': splits[0], 'post': []}
                 all_h3 = split_data['regular'].find_all('h3')
                 all_h3 = list(map(lambda x: x.text, all_h3))
-                split_data['regular'] = list(map(str, [pd.to_datetime(all_h3[0]), pd.to_datetime(all_h3[-1])]))
+                split_data['regular'] = list(map(str, [pd.to_datetime(all_h3[0]).date(), pd.to_datetime(all_h3[-1]).date()]))
             collections[year] = split_data      
         
         # save the file
@@ -126,7 +121,52 @@ class MLBSchedules:
         return collections
 
 class NBASchedules:
-    pass
+    schedule = None
+    def __init__(self, collectseasons, schedule_dir: str):
+        self.seasons = collectseasons.seasons
+        self.nba_path = os.path.join(schedule_dir, 'NBA_schedules.json')
+
+        if NBASchedules.schedule is None:
+            NBASchedules.schedule = self._collect_schedule()
+
+    def _collect_schedule(self):
+        # chack if file exists
+        if os.path.exists(self.nba_path):
+            with open(self.nba_path, 'r') as file:
+                return json.load(file)
+
+        print("Working on NBA Schedules...")
+        nba_seasons = self.seasons['nba']
+        year_range = range(nba_seasons['min_year'], nba_seasons['max_year'])
+        BAA_years = [1946, 1947, 1948]
+        collections = {}
+        for year in tqdm(year_range):
+            split_data = {}
+            # collect the regular season
+            if year in BAA_years:
+                regularseason_url = f"https://www.basketball-reference.com/leagues/BAA_{year+1}_games.html"
+                postseason_url = f"https://www.basketball-reference.com/playoffs/BAA_{year+1}.html"
+            else:
+                regularseason_url = f"https://www.basketball-reference.com/leagues/NBA_{year+1}_games.html"
+                postseason_url = f"https://www.basketball-reference.com/playoffs/NBA_{year+1}.html"
+            response = BeautifulSoup(requests.get(regularseason_url).content, 'html.parser')
+            filter_header = response.find('div', attrs = {'class': 'filter'})
+            links = ["https://www.basketball-reference.com" + a['href'] for a in filter_header.find_all('a')]
+            first = str(pd.to_datetime(pd.read_html(links[0])[0].iloc[0, 0]).date())
+            last = str(pd.to_datetime(pd.read_html(links[-1])[0].iloc[-1, 0]).date())
+            split_data['regular'] = [first, last]
+
+            #extract the postseason dates
+            playoffTable = pd.read_html(postseason_url)[0].iloc[:, 1]
+            dates = pd.Series([pd.to_datetime(pt + f", {year+1}").date() for pt in list(playoffTable) if isinstance(pt, str) and "@" not in pt and pt[-1].isdigit()])
+            split_data['post'] = [str(dates.min()), str(dates.max())]
+            collections[year] = split_data
+            
+        # save the file
+        with open(self.nba_path, 'w') as file:
+            json.dump(collections, file)
+
+        return None
 
 class NHLSchedules:
     pass
