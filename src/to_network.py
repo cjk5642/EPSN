@@ -10,19 +10,19 @@ from tqdm import tqdm
 import networkx as nx
 from itertools import cycle
 import pandas as pd
-print(os.getcwd())
 
 # load the project utils
 from utils import _convert_data_to_gml, _return_graph
 
 # load the lookups
-from src.lookups import NFLSchedules
+from schedules import *
 
 nflschedules = NFLSchedules()
 
 class NFLtoNetwork:
   def __init__(self, year: int or str = 2021, week: int = None, level: str = 'Team', regular_season_only: bool = True):
     self.year = year
+    self.nflschedules = NFLSchedules()
     self.__week = week
     self.__level = level
     self.__regular_season_only = regular_season_only
