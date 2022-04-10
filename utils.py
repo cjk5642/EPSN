@@ -1,6 +1,14 @@
 import networkx as nx
 from itertools import cycle
 import json
+import datetime
+
+__INIT_DATE__ = { 'mlb': datetime.datetime(1876, 4, 22), 
+                  'nba': datetime.datetime(1946, 11, 1), 
+                  'ncaaf': datetime.datetime(2000, 8, 26),  
+                  'nfl': datetime.datetime(1970, 9, 18), 
+                  'nhl': datetime.datetime(1918, 12, 21),
+                  'ncaab': datetime.datetime(1947, 1, 1)}
 
 def _convert_data_to_gml_helper(nodes: list, edges: list) -> str:
   header = f"graph[\n\tmultigraph 1\n\tdirected 1"
@@ -25,26 +33,14 @@ def _convert_data_to_gml_helper(nodes: list, edges: list) -> str:
   header += '\n]'
   return header
 
-def _convert_data_to_gml(output_path: str, nodes: list or list[list], edges: list or list[list], year: int or list[int]):
+def _convert_data_to_gml(nodes: list, edges: list):
   # check if nodes and edges contain list of lists
-  if not isinstance(nodes[0], list) and not isinstance(edges[0], list) and not isinstance(year, list):
-    header = _convert_data_to_gml_helper(nodes, edges)
-    data = {f"{year}": header}
-  else:
-    headers = [_convert_data_to_gml_helper(n, e) for n, e in zip(nodes, edges)]
-    data = {f"{year}": gml for year, gml in zip(year, headers)}
-  with open(output_path, 'w') as file:
-    json.dump(data, file)
+  gml = _convert_data_to_gml_helper(nodes, edges)
+  response = {"api_code": 200, "result": gml}
+  return response
 
-def _return_graph(path_to_gml: str):
-  graph = {}
-  with open(path_to_gml, 'r') as file:
-    graphs = json.load(file)
-
-  for k, v in graphs.items():
-    graph[k] = nx.parse_gml(v, label = 'id')
-  
-  return graph
+def _return_graph(gml: str):
+  return nx.parse_gml(gml, label = 'id')
 
 def _replicate_and_zip(data: list, team: str):
   zip_list = list(zip(data, cycle([team])))

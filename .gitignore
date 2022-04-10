@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# class stuff
+/diagrams
+/documents
+/images
+.vscode
