@@ -21,38 +21,36 @@ When using network data formats like `.gml` or a `.csv` that explicitly states w
 ---
 
 # Sample Response
-Say you would like to query the 1980 NFL season for all games at the team level. The search query url will be `https://extractsportsparts.network/?sport=nfl&year=1980&week=all&team=all&player=all&level=team&postseason=false`. The response would be as follows:
+Say you would like to query the 1980 NFL season for all games at the team level. The search query url will be `https://extractsportsparts.network/?sport=nfl&year=1980&level=team`. The response would be as follows:
 ```gml
 graph[
 	multigraph 1
 	node[
 	 id "Buffalo Bills"
 	 label "Bills"
-	 location "Buffalo"
 	]
 	node[
 	 id "Miami Dolphins"
 	 label "Dolphins"
-	 location "Miami"
 	]
 	...
 	edge[
 	 source "Miami Dolphins"
 	 target "Buffalo Bills"
-	 source_score 7
-	 target_score 17
+	 source_win 1
+	 target_win 0
 	 week 1
 	 year 1980
-	 is_postseason "False"
+	 season_type "Reg"
 	]
 	edge[
 	 source "Tampa Bay Buccaneers"
 	 target "Cincinnati Bengals"
-	 source_score 17
-	 target_score 12
+	 source_win 0
+	 target_win 1
 	 week 1
 	 year 1980
-	 is_postseason "False"
+	 season_type "Reg"
 	]
     ...
 ]
