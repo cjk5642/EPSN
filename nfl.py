@@ -98,17 +98,17 @@ class NFL:
           home_win = 1
         
         # collect the players
-        for away_player, home_player in source_to_target_players:
+        for away_player, home_player in tqdm(source_to_target_players):
           away_player_id = away_player.player_id
           home_player_id = home_player.player_id
-          if not nodes.get(away_player_id):
+          if nodes.get(away_player_id) is None:
             try:
               away_player_position = nfl_player(away_player_id).position
             except TypeError:
               away_player_position = ""
             nodes[away_player_id] = {'id': away_player_id, "name": away_player.name, 'position': away_player_position}
 
-          if not nodes.get(home_player_id):
+          if nodes.get(home_player_id) is None:
             try:
               home_player_position = nfl_player(home_player_id).position
             except TypeError:
