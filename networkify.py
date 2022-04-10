@@ -1,15 +1,7 @@
-import json
-import os
-import sys
+
 from sportsipy.nfl.boxscore import Boxscores as nfl_boxscores
 from sportsipy.nfl.boxscore import Boxscore as nfl_boxscore
-from sportsipy.nfl.roster import Roster as nfl_roster
-from sportsipy.nfl.roster import Player as nfl_player
-import datetime
 from tqdm import tqdm
-import networkx as nx
-from itertools import cycle
-import pandas as pd
 
 # load the project utils
 from utils import _convert_data_to_gml, _return_graph
