@@ -66,4 +66,4 @@ The following displays the estimated times of how fast the data is queried and r
 | (/week/year) 	| NFL   		| MLB 	| NHL 	| NCAAF 	| NCAAB 	|
 |--------------	|-------		|-----	|-----	|-------	|-------	|
 | Team         	| ~ 9s			|     	|     	|       	|       	|
-| Player       	| 5.89s - 17.28s	|     	|     	|       	|       	|
+| Player       	| ~ 22mins	|     	|     	|       	|       	|
