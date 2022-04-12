@@ -1,8 +1,8 @@
 
 import itertools
-from sportsipy.nfl.teams import Teams as nfl_teams
-from sportsipy.nfl.schedule import Schedule as nfl_schedule
-from sportsipy.nfl.roster import Player as nfl_player
+from sportsipy.mlb.teams import Teams as mlb_teams
+from sportsipy.mlb.schedule import Schedule as mlb_schedule
+from sportsipy.mlb.roster import Player as mlb_player
 from tqdm import tqdm
 import datetime
 
@@ -11,23 +11,23 @@ from utils import _convert_data_to_gml, __INIT_DATE__
 
 current_year = datetime.datetime.now().year
 
-class NFL:
+class MLB:
   _cache = {}
   def __init__(self, year: int = 2021, level: str = 'team'):
     self.year = year
     self.level = level
     
     # create data and generate response
-    nfl_year = __INIT_DATE__['nfl'].year
-    if nfl_year <= self.year <= current_year:
-      if NFL._cache.get((self.year, self.level)) is None:
+    mlb_year = __INIT_DATE__['mlb'].year
+    if mlb_year <= self.year <= current_year:
+      if MLB._cache.get((self.year, self.level)) is None:
         self.nodes, self.edges = self._establish_data()
         self.response = self._generate_response()
-        NFL._cache[(self.year, self.level)] = self.response
+        MLB._cache[(self.year, self.level)] = self.response
       else:
-        self.response = NFL._cache[(self.year, self.level)]
+        self.response = MLB._cache[(self.year, self.level)]
     else:
-      self.response = {"api_code": 400, "result": f"ERROR: Wrong input year. Must be between {nfl_year} and {current_year}"}
+      self.response = {"api_code": 400, "result": f"ERROR: Wrong input year. Must be between {mlb_year} and {current_year}"}
 
   def _establish_data(self):
     if self.level.lower() == 'team':
@@ -41,15 +41,15 @@ class NFL:
   def _prepare_game_data(self):
     nodes = []
     edges = []
-    teams = nfl_teams(self.year)
+    teams = mlb_teams(self.year)
     for team in tqdm(teams):
-      abbr, name = team.abbreviation, team.name
+      abbr, name = team.abbreviation, team.abbreviation
       node = {"id": abbr, 'label': name}
       if node not in nodes:
         nodes.append(node)
       
       # schedules
-      team_sched = nfl_schedule(abbr, year = self.year)
+      team_sched = mlb_schedule(abbr, year = self.year)
       for game in team_sched._games:
         # determine home and away teams
         if game.location == 'Away': 
@@ -67,7 +67,7 @@ class NFL:
           home_win = 1
         
         edge = {'source': away_team, 'target': home_team, 'source_win': away_win, 
-                'target_win': home_win, 'week': game.week, 'year': self.year, 'season_type': game.type}
+                'target_win': home_win, 'game_num': game.game, 'year': self.year}
         edges.append(edge)
     return nodes, edges
   
@@ -75,10 +75,10 @@ class NFL:
   def _prepare_player_data(self):
     nodes = {}
     edges = []
-    teams = nfl_teams(year = self.year)
+    teams = mlb_teams(year = self.year)
     for team in tqdm(teams):
       team_abbr = team.abbreviation
-      team_sched = nfl_schedule(team_abbr, year = self.year)
+      team_sched = mlb_schedule(team_abbr, year = self.year)
       for game in team_sched._games:
         box = game.boxscore
 
@@ -107,20 +107,20 @@ class NFL:
           home_player_id = home_player.player_id
           if nodes.get(away_player_id) is None:
             try:
-              away_player_position = nfl_player(away_player_id).position
+              away_player_position = mlb_player(away_player_id).position
             except TypeError:
               away_player_position = ""
             nodes[away_player_id] = {'id': away_player_id, "name": away_player.name, 'position': away_player_position}
 
           if nodes.get(home_player_id) is None:
             try:
-              home_player_position = nfl_player(home_player_id).position
+              home_player_position = mlb_player(home_player_id).position
             except TypeError:
               away_player_position = ""
             nodes[home_player_id] = {'id': home_player_id, "name": home_player.name, 'position': home_player_position} 
 
           edge = {'source': away_player_id, 'target': home_player_id, 'source_team': away_team, 'target_team': home_team, 'source_win': away_win, 
-                  'target_win': home_win, 'week': game.week, 'year': self.year, 'season_type': game.type}
+                  'target_win': home_win, 'game_num': game.game, 'year': self.year}
           edges.append(edge)
 
     return list(nodes.values()), edges
