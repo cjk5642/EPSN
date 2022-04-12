@@ -1,7 +1,13 @@
-from nfl import NFL
-from utils import _return_graph
+"""
+from mlb import MLB
 import networkx as nx
-
-response = NFL(level = 'player').response['result']
-graph = _return_graph(response)
+m = MLB()
+response = m.response['result']
+graph = nx.parse_gml(response, label = 'id')
 print(nx.info(graph))
+"""
+from sportsipy.nba.teams import Teams 
+teams = Teams(2020)
+for team in teams:
+    print(team.name, team.abbreviation)
+    break
