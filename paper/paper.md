@@ -26,11 +26,11 @@ or tabular format. `EPSN` strives to revolutionize the way users analyze sports
 data as whole. While allowing users to choose which level they would like to 
 analyze the desired sport, Team or Player, the user is given a response in 
 Graph Markup Language (GML) format so it can be saved and used for later or
-parsed, cached, and analyzed in Python using `NetworkX` @hagberg2008exploring. 
+parsed, cached, and analyzed in Python using `NetworkX` [@hagberg2008exploring]. 
 
 # Statement of need
 
-`EPSN` is a API Wrapper of Sportsipy developed for the sole purpose of 
+`EPSN` is a API Wrapper of `Sportsipy` [@sportsipy] developed for the sole purpose of 
 producing sports affiliations as networks. This project was developed due to
 my original inability to find quality datasets that represent networks and that
 are not overused. `EPSN` provides flexible queries to a user who is interested in
