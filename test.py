@@ -1,138 +1,19 @@
-from multiprocessing import Pool
 import itertools
-from sportsipy.mlb.teams import Teams as nhl_teams
-from sportsipy.mlb.schedule import Schedule as nhl_schedule
-from sportsipy.mlb.roster import Player as nhl_player
+from sportsipy.ncaaf.teams import Teams as ncaaf_teams
+from sportsipy.ncaaf.schedule import Schedule as ncaaf_schedule
+from sportsipy.ncaaf.roster import Player as ncaaf_player
 from tqdm import tqdm
 import datetime
 
-# load the project utils
-from utils import _convert_data_to_gml, __INIT_DATE__
+year = 2020
+teams = ncaaf_teams(year = year)
+for team in teams:
+  print(team.abbreviation, team.name, team.conference)
+  games = team.schedule
+  for game in games:
+    print(game.opponent_abbr, 
+    game.opponent_name, 
+    game.opponent_conference.lower(), game.opponent_rank, game.rank)
 
-current_year = datetime.datetime.now().year
-
-class NHL:
-  _cache = {}
-  def __init__(self, year: int = 2021, level: str = 'team'):
-    self.year = year
-    self.level = level
-    
-    # create data and generate response
-    nhl_year = __INIT_DATE__['nhl'].year
-    if nhl_year <= self.year <= current_year:
-      if NHL._cache.get((self.year, self.level)) is None:
-        self.nodes, self.edges = self._establish_data()
-        self.response = self._generate_response()
-        NHL._cache[(self.year, self.level)] = self.response
-      else:
-        self.response = NHL._cache[(self.year, self.level)]
-    else:
-      self.response = {"api_code": 400, "result": f"ERROR: Wrong input year. Must be between {nhl_year} and {current_year}"}
-
-  def _establish_data(self):
-    if self.level.lower() == 'team':
-      self.nodes, self.edges = [], []
-      self._prepare_game_data()
-    elif self.level.lower() == 'player':
-      self.nodes, self.edges = [], []
-      self._prepare_player_data()
-    else:
-      self.nodes, self.edges = None, None
-    return None
-
-  def _prepare_game_data(self):
-    teams = nhl_teams(self.year)
-    for team in teams:
-        abbr, name = team.abbreviation, team.name
-
-        node = {"id": abbr, 'label': name}
-        if node not in self.nodes:
-            self.nodes.append(node)
-        
-        # schedules
-        team_sched = nhl_schedule(abbr, year = self.year)
-        for game in team_sched._games:
-            # determine home and away teams
-            if game.location == 'Away': 
-                away_team = abbr
-                home_team = game.opponent_abbr
-            else:
-                away_team = game.opponent_abbr
-                home_team = abbr
-            # get game result
-            if game.result == 'Win':
-                away_win = 1
-                home_win = 0
-            else:
-                away_win = 0
-                home_win = 1
-        
-            edge = {'source': away_team, 'target': home_team, 'source_win': away_win, 
-                    'target_win': home_win, 'game_num': game.game, 'year': self.year}
-            self.edges.append(edge)
-    return nodes, edges
-
-  def _multiprocess_players(self, player, away_team, home_team, away_win, home_win, game):
-    away_player, home_player = player
-    away_player_id = away_player.player_id
-    home_player_id = home_player.player_id
-    if self.nodes.get(away_player_id) is None:
-        try:
-            away_player_position = nhl_player(away_player_id).position
-        except TypeError:
-            away_player_position = ""
-        self.nodes[away_player_id] = {'id': away_player_id, "name": away_player.name, 'position': away_player_position}
-
-    if self.nodes.get(home_player_id) is None:
-        try:
-            home_player_position = nhl_player(home_player_id).position
-        except TypeError:
-            away_player_position = ""
-        self.nodes[home_player_id] = {'id': home_player_id, "name": home_player.name, 'position': home_player_position} 
-
-    edge = {'source': away_player_id, 'target': home_player_id, 'source_team': away_team, 'target_team': home_team, 'source_win': away_win, 
-            'target_win': home_win, 'game_num': game.game, 'year': self.year}
-    self.edges.append(edge)
-    
-  # collect player data
-  def _prepare_player_data(self):
-    teams = nhl_teams(year = self.year)
-    for team in tqdm(teams):
-      team_abbr = team.abbreviation
-      team_sched = nhl_schedule(team_abbr, year = self.year)
-      for game in team_sched._games:
-        box = game.boxscore
-
-        away_players = box.away_players
-        home_players = box.home_players
-
-        # establish home or waway and who won
-        if game.location == 'Away': 
-          away_team = team_abbr
-          home_team = game.opponent_abbr
-        else:
-          away_team = game.opponent_abbr
-          home_team = team_abbr
-        
-        if game.result == 'Win':
-          away_win = 1
-          home_win = 0
-        else:
-          away_win = 0
-          home_win = 1
-        
-        source_to_target_players = itertools.product(away_players, home_players)
-
-        with Pool() as pool:
-            _ = pool.map(self._multiprocess_players, args = ())
-        
-        # collect the players
-          
-
-    return None
-
-  def _generate_response(self):
-    if self.nodes and self.edges:
-      return _convert_data_to_gml(self.nodes, self.edges) 
-    else:
-      return {"api_code": 400, "result": f"Error: Specified level must be T(t)eam or P(p)layer not {self.level}"}
+    break
+  break
