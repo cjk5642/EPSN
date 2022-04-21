@@ -4,7 +4,7 @@
 </p>
 
 
-**EPSN** is the first ever transformation tool to convert sports data in tabular or unstrucuted format into a network style format like `.gml`. As well as collecting sports data as networks, you only need to provide what you want and **EPSN** will do the rest.
+**EPSN** is the first ever transformation tool to convert sports data from tabular or unstrucuted format into a network style format like `.gml`. As well as collecting sports data as networks, you only need to provide the desired details and **EPSN** will do the rest.
 
 ---
 
@@ -20,7 +20,7 @@ When using network data formats like `.gml` or a `.csv` that explicitly states w
 
 ---
 
-# Sample Response
+## Sample Response
 Say you would like to query the 1980 NFL season for all games at the team level. The search query url will be `https://epsn.api/?sport=nfl&year=1980&level=team`. The response would be as follows:
 ```gml
 graph[
@@ -63,9 +63,12 @@ and the network will look as follows
 ## Time for response
 The following displays the estimated times of how fast the data is queried and responded
 
-|Level	|NFL   	|MLB 	|NHL 	| NCAAF 		| NCAAB 	|
-|-------|-------|-------|-------|-------		|-------	|
-|Team   |9s		|20s    |15s    |17s 			|       	|
-|Player |22mins	|50 mins|30 mins|       		|       	|
+|Level	|NFL   	|MLB 	|NHL 	| NCAAF | NCAAB 	|
+|-------|-------|-------|-------|-------|-------	|
+|Team   |9s		|20s    |15s    |17s 	|1 min      |
+|Player |30 mins|50 mins|30 mins|53 mins|       	|
 
-Obviously, the times are different per yer since the number of teams and players varies per year. This estimates are run for the year 2021 so one could estimate that, for older seasons, the response will be quicker. In essence, the response table above represents the "max".
+Obviously, the times are different per yer since the number of teams and players varies per year. This estimates are run for the year 2021 so one could estimate that, for older seasons, the response will be quicker. In essence, the response table above represents the "max". Due to how the system cache's the nodes, the initial time of running is not correct. Overtime, the complexity will shift from $\mathcal{O}(n^3) \rightarrow \mathcal{O}(n^2)$ for the player level due to the previously mentioned system.
+
+## Known Conflicts
+Since this package is built on top of another package as a wrapper, if an error develops from the source rather than this wrapper, there is nothing that can be done. This is why, at the time of writing this on 4/21/2022, NBA is not implemented and the player level for NCAAB is not implemented due to these conflicts. I apologize in advance as I know this can be frustrating. The eventual goal is to either seperate from Sportsipy all together or somehow merge. But, this will most likely not be until further down the road for this project to mature properly.

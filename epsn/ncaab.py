@@ -33,7 +33,7 @@ class NCAAB:
     if self.level.lower() == 'team':
       nodes, edges = self._prepare_game_data()
     elif self.level.lower() == 'player':
-      nodes, edges = self._prepare_player_data()
+      nodes, edges = None, None #self._prepare_player_data()
     else:
       nodes, edges = None, None
     return nodes, edges
@@ -50,30 +50,20 @@ class NCAAB:
       for game in games:
         # determine home and away teams
         if game.location == 'Away': 
-          away_team = abbr
-          home_team = game.opponent_abbr
-          away_team_rank = game.rank
-          home_team_rank = game.opponent_rank
+          away_team = abbr.lower()
+          home_team = game.opponent_abbr.lower()
           away_team_name = name
           home_team_name = game.opponent_name
           away_team_conf = conf
           home_team_conf = game.opponent_conference
 
         else:
-          away_team = game.opponent_abbr
-          home_team = abbr
-          away_team_rank = game.opponent_rank
-          home_team_rank = game.rank
+          away_team = game.opponent_abbr.lower()
+          home_team = abbr.lower()
           away_team_name = game.opponent_name
           home_team_name = name
           away_team_conf = game.opponent_conference
           home_team_conf = conf
-
-        # change None to "None"
-        if away_team_rank is None:
-          away_team_rank = 'None'
-        if home_team_rank is None:
-          home_team_rank = 'None'
 
         # ensure all nodes are defined
         away_node = {"id": away_team, 'label': away_team_name, 'conference': away_team_conf}
@@ -101,13 +91,12 @@ class NCAAB:
                 'target': home_team, 
                 'source_win': away_win, 
                 'target_win': home_win, 
-                "source_rank": away_team_rank, 
-                "target_rank": home_team_rank,
                 'source_conference': away_team_conf,
                 'target_conference': home_team_conf,
                 'week': game.game,
                 "conference_game": conf_game, 
-                'year': self.year}
+                'year': self.year, 
+                'season_type': game.type}
         edges.append(edge)
 
     return list(nodes.values()), edges
@@ -132,24 +121,15 @@ class NCAAB:
         if game.location == 'Away': 
           away_team = abbr
           home_team = game.opponent_abbr
-          away_team_rank = game.rank
-          home_team_rank = game.opponent_rank
           away_team_conf = conf
           home_team_conf = game.opponent_conference
 
         else:
           away_team = game.opponent_abbr
           home_team = abbr
-          away_team_rank = game.opponent_rank
-          home_team_rank = game.rank
           away_team_conf = game.opponent_conference
           home_team_conf = conf
-
-        if away_team_rank is None:
-          away_team_rank = 'None'
-        if home_team_rank is None:
-          home_team_rank = 'None'
-
+        
         # get game result
         if game.result.lower() == 'win':
           away_win = 1
@@ -157,7 +137,8 @@ class NCAAB:
         else:
           away_win = 0
           home_win = 1
-
+        
+        # check if the two conferences of the teams are the same
         if conf == game.opponent_conference.lower():
             conf_game = 1
         else:
@@ -180,6 +161,7 @@ class NCAAB:
 
             nodes[away_player_id] = {'id': away_player_id, "name": away_player.name, 'position': away_player_position, 'class': away_player_class}
 
+          # check if the home player id is in the nodes
           if nodes.get(home_player_id) is None:
             home_player_instance = ncaab_player(home_player_id)
             try:
@@ -198,13 +180,12 @@ class NCAAB:
                   'target_team': home_team, 
                   'source_win': away_win, 
                   'target_win': home_win, 
-                  "source_rank": away_team_rank, 
-                  "target_rank": home_team_rank,
                   'source_conference': away_team_conf,
                   'target_conference': home_team_conf,
                   'week': game.game,
                   "conference_game": conf_game, 
-                  'year': self.year
+                  'year': self.year,
+                  'season_type': game.type
                   }
           edges.append(edge)
 

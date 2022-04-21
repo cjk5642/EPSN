@@ -43,7 +43,7 @@ class NCAAF:
     edges = []
     teams = ncaaf_teams(self.year)
     for team in tqdm(teams):
-      abbr, name, conf = team.abbreviation, team.name, team.conference.lower()
+      abbr, name, conf = team.abbreviation.lower(), team.name, team.conference.lower()
       
       # schedules
       games = team.schedule
@@ -51,7 +51,7 @@ class NCAAF:
         # determine home and away teams
         if game.location == 'Away': 
           away_team = abbr
-          home_team = game.opponent_abbr
+          home_team = game.opponent_abbr.lower()
           away_team_rank = game.rank
           home_team_rank = game.opponent_rank
           away_team_name = name
@@ -60,7 +60,7 @@ class NCAAF:
           home_team_conf = game.opponent_conference
 
         else:
-          away_team = game.opponent_abbr
+          away_team = game.opponent_abbr.lower()
           home_team = abbr
           away_team_rank = game.opponent_rank
           home_team_rank = game.rank
@@ -165,8 +165,8 @@ class NCAAF:
         
         # collect the players
         for away_player, home_player in source_to_target_players:
-          away_player_id = away_player.player_id
-          home_player_id = home_player.player_id
+          away_player_id = away_player.player_id.lower()
+          home_player_id = home_player.player_id.lower()
           if nodes.get(away_player_id) is None:
             away_player_instance = ncaaf_player(away_player_id)
             try:
