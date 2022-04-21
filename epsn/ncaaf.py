@@ -39,14 +39,11 @@ class NCAAF:
     return nodes, edges
 
   def _prepare_game_data(self):
-    nodes = []
+    nodes = {}
     edges = []
     teams = ncaaf_teams(self.year)
     for team in tqdm(teams):
       abbr, name, conf = team.abbreviation, team.name, team.conference.lower()
-      node = {"id": abbr, 'label': name, 'conference': conf}
-      if node not in nodes:
-        nodes.append(node)
       
       # schedules
       games = team.schedule
@@ -57,6 +54,8 @@ class NCAAF:
           home_team = game.opponent_abbr
           away_team_rank = game.rank
           home_team_rank = game.opponent_rank
+          away_team_name = name
+          home_team_name = game.opponent_name
           away_team_conf = conf
           home_team_conf = game.opponent_conference
 
@@ -65,8 +64,25 @@ class NCAAF:
           home_team = abbr
           away_team_rank = game.opponent_rank
           home_team_rank = game.rank
+          away_team_name = game.opponent_name
+          home_team_name = name
           away_team_conf = game.opponent_conference
           home_team_conf = conf
+
+        # change None to "None"
+        if away_team_rank is None:
+          away_team_rank = 'None'
+        if home_team_rank is None:
+          home_team_rank = 'None'
+
+        # ensure all nodes are defined
+        away_node = {"id": away_team, 'label': away_team_name, 'conference': away_team_conf}
+        if nodes.get(away_team) is None:
+          nodes[away_team] = away_node
+
+        home_node = {"id": home_team, 'label': home_team_name, 'conference': home_team_conf}
+        if nodes.get(home_team) is None:
+          nodes[home_team] = home_node
 
         # get game result
         if game.result.lower() == 'win':
@@ -94,7 +110,7 @@ class NCAAF:
                 'year': self.year}
         edges.append(edge)
 
-    return nodes, edges
+    return list(nodes.values()), edges
   
   # collect player data
   def _prepare_player_data(self):
@@ -106,7 +122,7 @@ class NCAAF:
 
       # schedules
       games = team.schedule
-      for game in games:
+      for game in tqdm(games):
         box = game.boxscore
         away_players = box.away_players
         home_players = box.home_players
@@ -129,6 +145,11 @@ class NCAAF:
           away_team_conf = game.opponent_conference
           home_team_conf = conf
 
+        if away_team_rank is None:
+          away_team_rank = 'None'
+        if home_team_rank is None:
+          home_team_rank = 'None'
+
         # get game result
         if game.result.lower() == 'win':
           away_win = 1
@@ -143,7 +164,7 @@ class NCAAF:
             conf_game = 0
         
         # collect the players
-        for away_player, home_player in tqdm(source_to_target_players):
+        for away_player, home_player in source_to_target_players:
           away_player_id = away_player.player_id
           home_player_id = home_player.player_id
           if nodes.get(away_player_id) is None:
