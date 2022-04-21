@@ -19,7 +19,7 @@ class NCAAF:
     
     # create data and generate response
     ncaaf_year = __INIT_DATE__['ncaaf'].year
-    if ncaaf_year <= self.year <= current_year:
+    if ncaaf_year <= self.year <= current_year-1:
       if NCAAF._cache.get((self.year, self.level)) is None:
         self.nodes, self.edges = self._establish_data()
         self.response = self._generate_response()
@@ -58,14 +58,14 @@ class NCAAF:
           away_team_rank = game.rank
           home_team_rank = game.opponent_rank
           away_team_conf = conf
-          home_team_conf = game.opponent_conf
+          home_team_conf = game.opponent_conference
 
         else:
           away_team = game.opponent_abbr
           home_team = abbr
           away_team_rank = game.opponent_rank
           home_team_rank = game.rank
-          away_team_conf = game.opponent_conf
+          away_team_conf = game.opponent_conference
           home_team_conf = conf
 
         # get game result
@@ -119,14 +119,14 @@ class NCAAF:
           away_team_rank = game.rank
           home_team_rank = game.opponent_rank
           away_team_conf = conf
-          home_team_conf = game.opponent_conf
+          home_team_conf = game.opponent_conference
 
         else:
           away_team = game.opponent_abbr
           home_team = abbr
           away_team_rank = game.opponent_rank
           home_team_rank = game.rank
-          away_team_conf = game.opponent_conf
+          away_team_conf = game.opponent_conference
           home_team_conf = conf
 
         # get game result
