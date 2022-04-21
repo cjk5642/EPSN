@@ -129,8 +129,8 @@ dmypy.json
 .pyre/
 
 # class stuff
-/diagrams
-/documents
-/images
+diagrams/
+documents/
+images/
 .vscode
-/paper
+paper/
