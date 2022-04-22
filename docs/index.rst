@@ -5,7 +5,7 @@
 Extraction of Particular Sports as Networks (EPSN)
 ============================================================
 **EPSN** is the first ever transformation tool to convert sports data from tabular or
-unstrucuted format into a network style format like `.gml`. As well as collecting sports 
+unstrucuted format into a network style format like ``.gml``. As well as collecting sports 
 data as networks, you only need to provide the desired details and **EPSN** will do the rest.
 
 Problem
