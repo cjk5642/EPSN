@@ -4,3 +4,7 @@ build:
   os: "Windows 11"
   tools:
     python: 3.10.4
+
+python:
+  install:
+    - requirements: docs/requirements.txt
