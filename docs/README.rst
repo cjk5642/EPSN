@@ -1,3 +1,5 @@
+[![Documentation Status](https://readthedocs.org/projects/epsn/badge/?version=latest)](https://epsn.readthedocs.io/en/latest/?badge=latest)
+
 # Extraction of Particular Sports as Networks (EPSN)
 <p align="center">
 	<img src="images/logo.png" alt="logo" width="600"/>
