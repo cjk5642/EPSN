@@ -1,4 +1,4 @@
-[![Documentation Status](https://readthedocs.org/projects/epsn/badge/?version=latest)](https://epsn.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/epsn/badge/?version=latest)](https://epsn.readthedocs.io/en/latest/?badge=latest) [![codecov](https://codecov.io/github/cjk5642/EPSN/branch/main/graph/badge.svg?token=JEPHZ0BXZJ)](https://codecov.io/github/cjk5642/EPSN)
 
 # Extraction of Particular Sports as Networks (EPSN)
 <p align="center">
