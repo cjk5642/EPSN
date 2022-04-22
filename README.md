@@ -1,4 +1,4 @@
-[![Documentation Status](https://readthedocs.org/projects/epsn/badge/?version=latest)](https://epsn.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/epsn/badge/?version=latest)](https://epsn.readthedocs.io/en/latest/?badge=latest) [![codecov](https://codecov.io/github/cjk5642/EPSN/branch/main/graph/badge.svg?token=JEPHZ0BXZJ)](https://codecov.io/github/cjk5642/EPSN) [![Known Vulnerabilities](https://snyk.io/test/github/cjk5642/EPSN/badge.svg)](https://snyk.io/test/github/cjk5642/EPSN)
 
 # Extraction of Particular Sports as Networks (EPSN)
 <p align="center">
@@ -82,5 +82,5 @@ install all of the requirements found in ``/docs``.
 ```
     git clone https://github.com/cjk5642/EPSN
     cd epsn
-    pip install -r /docs/requirements.txt
+    pip install -r requirements.txt
 ```
