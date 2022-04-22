@@ -21,7 +21,7 @@ When using network data formats like `.gml` or a `.csv` that explicitly states w
 ---
 
 ## Sample Response
-Say you would like to query the 1980 NFL season for all games at the team level. The search query url will be `https://epsn.api/?sport=nfl&year=1980&level=team`. The response would be as follows:
+Say you would like to query the 1980 NFL season for all games at the team level. The response would be as follows:
 ```gml
 graph[
 	multigraph 1
