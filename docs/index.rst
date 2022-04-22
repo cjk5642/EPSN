@@ -106,10 +106,10 @@ merge. But, this will most likely not be until further down the road for this pr
 mature properly.
 
 .. toctree::
-   :caption: Contents:
-   :titlesonly:
    
    *
+   epsn
+   installation
 
 Indices and tables
 ==================
