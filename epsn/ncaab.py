@@ -7,7 +7,7 @@ from tqdm import tqdm
 import datetime
 
 # load the project utils
-from utils import _convert_data_to_gml, __INIT_DATE__
+from .utils import _convert_data_to_gml, __INIT_DATE__
 
 current_year = datetime.datetime.now().year
 
