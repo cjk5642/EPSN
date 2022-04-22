@@ -107,12 +107,11 @@ mature properly.
 
 .. toctree::
    
-   *
    epsn
    installation
 
 Indices and tables
-==================
+-------------------
 
 * :ref:`genindex`
 * :ref:`modindex`
