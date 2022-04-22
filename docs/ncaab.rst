@@ -6,7 +6,7 @@ The NCAAB package provides a module that allows the user to provide the
 
 
 Levels
-======
+------
 This designates what the user would like to look at. If the user would like
 to extract networks of teams for the given sport, then the user would
 input ``level='team'``. Conversely, if the user would like to input at the
