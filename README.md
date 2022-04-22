@@ -75,3 +75,12 @@ Since this package is built on top of another package as a wrapper, if an error 
 
 # Documentation
 The documentation for this project can be found [here](https://epsn.readthedocs.io/en/latest/) and will be updated routinely to reflect the modules. 
+
+# Installation
+As of now, the best way to install is through GitHub. Use git and pip
+install all of the requirements found in ``/docs``.
+```
+    git clone https://github.com/cjk5642/EPSN
+    cd epsn
+    pip install -r /docs/requirements.txt
+```

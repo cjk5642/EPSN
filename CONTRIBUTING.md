@@ -1,0 +1,2 @@
+# Contributing
+Contributing is highly encouraged. One of the known problems with this is the speed. While EPSN provides flexibility and ease-of-use for extract sports networks, one of the biggest restrictions is the speed in regards to the players. If speeding up web operations is something you are able to do, then please fork the repo and create a branch. 

@@ -104,3 +104,10 @@ is not implemented due to these conflicts. I apologize in advance as I know this
 frustrating. The eventual goal is to either seperate from Sportsipy all together or somehow 
 merge. But, this will most likely not be until further down the road for this project to
 mature properly.
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   epsn
+   installation

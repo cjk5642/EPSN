@@ -129,7 +129,6 @@ dmypy.json
 .pyre/
 
 # class stuff
-docs/
 images/
 .vscode/
 .github/
