@@ -2,13 +2,11 @@
 
 # Extraction of Particular Sports as Networks (EPSN)
 <p align="center">
-	<img src="images/logo.png" alt="logo" width="600"/>
+	<img src="images/logo.png" alt="logo" />
 </p>
 
 
 **EPSN** is the first ever transformation tool to convert sports data from tabular or unstrucuted format into a network style format like `.gml`. As well as collecting sports data as networks, you only need to provide the desired details and **EPSN** will do the rest.
-
----
 
 ## Problem
 When using network data formats like `.gml` or a `.csv` that explicitly states what the source and target nodes are, there is no room for customization and variability. Often times, finding the right network data is hard, time consuming, and sometimes impossible. This is where **EPSN** comes into play.
@@ -74,3 +72,6 @@ Obviously, the times are different per yer since the number of teams and players
 
 ## Known Conflicts
 Since this package is built on top of another package as a wrapper, if an error develops from the source rather than this wrapper, there is nothing that can be done. This is why, at the time of writing this on 4/21/2022, NBA is not implemented and the player level for NCAAB is not implemented due to these conflicts. I apologize in advance as I know this can be frustrating. The eventual goal is to either seperate from Sportsipy all together or somehow merge. But, this will most likely not be until further down the road for this project to mature properly.
+
+# Documentation
+The documentation for this project can be found [here](https://epsn.readthedocs.io/en/latest/) and will be updated routinely to reflect the modules. 
