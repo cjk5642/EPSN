@@ -16,5 +16,6 @@ setup(
         'itertools',
         'datetime',
         'tqdm'
-    ]
+    ],
+    setup_requires=['wheel']
 )
