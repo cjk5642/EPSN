@@ -1,0 +1,8 @@
+cff-version: 0.1.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Kovacs
+    given-names: Collin
+title: "EPSN: Extraction of Particular Sports as Networks"
+version: 0.1.0
+date-released: 2022-04-22
