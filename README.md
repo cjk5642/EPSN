@@ -1,4 +1,7 @@
-[![Documentation Status](https://readthedocs.org/projects/epsn/badge/?version=latest)](https://epsn.readthedocs.io/en/latest/?badge=latest) [![codecov](https://codecov.io/github/cjk5642/EPSN/branch/main/graph/badge.svg?token=JEPHZ0BXZJ)](https://codecov.io/github/cjk5642/EPSN) [![Known Vulnerabilities](https://snyk.io/test/github/cjk5642/EPSN/badge.svg)](https://snyk.io/test/github/cjk5642/EPSN)
+[![Documentation Status](https://readthedocs.org/projects/epsn/badge/?version=latest)](https://epsn.readthedocs.io/en/latest/?badge=latest)
+[![codecov](https://codecov.io/github/cjk5642/EPSN/branch/main/graph/badge.svg?token=JEPHZ0BXZJ)](https://codecov.io/github/cjk5642/EPSN)
+[![Known Vulnerabilities](https://snyk.io/test/github/cjk5642/EPSN/badge.svg)](https://snyk.io/test/github/cjk5642/EPSN)
+[![DOI](https://zenodo.org/badge/460131145.svg)](https://zenodo.org/badge/latestdoi/460131145)
 
 # Extraction of Particular Sports as Networks (EPSN)
 <p align="center">
